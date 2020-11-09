@@ -2,14 +2,12 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
-	"math"
 	"math/big"
-	"strings"
+	"sync"
+	"time"
 
 	"github.com/ethereum/go-ethereum"
-	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
@@ -23,96 +21,86 @@ const (
 	ethDipManagerAddr = "0x44A25c7dD6031Fa3E9A4f60b29cE8f9c27132ac8"
 )
 
-func AbiFromJson(json string) (*abi.ABI, error) {
-	abiObj, err := abi.JSON(strings.NewReader(json))
-	if err != nil {
-		return nil, err
+var (
+	erc20Addr   = common.HexToAddress(ethDipManagerAddr)
+	headerBlock = int64(0) // 订阅以太坊，时时更新
+	gRWLock     = new(sync.RWMutex)
+)
+
+func QueryLog(cli *ethclient.Client, ctx context.Context, fromBlock, toBlock int64) ([]types.Log, error) {
+	query := ethereum.FilterQuery{
+		Addresses: []common.Address{
+			erc20Addr,
+		},
+		FromBlock: big.NewInt(fromBlock),
+		ToBlock:   big.NewInt(toBlock),
+		//Topics:
 	}
 
-	return &abiObj, nil
+	return cli.FilterLogs(ctx, query)
 }
 
-func UnpackLog(out interface{}, abiObj *abi.ABI, event string, log types.Log) error {
-	if len(log.Data) > 0 {
-		if err := abiObj.Unpack(out, event, log.Data); err != nil {
-			return err
-		}
-	}
-
-	var indexed abi.Arguments
-	for _, arg := range abiObj.Events[event].Inputs {
-		if arg.Indexed {
-			indexed = append(indexed, arg)
-		}
-	}
-
-	return abi.ParseTopics(out, indexed, log.Topics[1:])
-}
-
-func ParseTokenLocked(abiObj *abi.ABI, logE types.Log) (tokenLockedEvent *MainTokenLocked, err error) {
-	tokenLockedEvent = new(MainTokenLocked)
-	err = UnpackLog(tokenLockedEvent, abiObj, "TokenLocked", logE)
-	if err != nil {
-		return nil, err
-	}
-
-	return
-}
-
-func main() {
+func LogProcess(cli *ethclient.Client, ctx context.Context) {
 	abiObj, err := AbiFromJson(MainABI)
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	startBlock := int64(1000) // 配置文件读取
+
+	for {
+		gRWLock.RLock()
+		toBlock := headerBlock - 50 - startBlock
+		gRWLock.RUnlock()
+		if toBlock <= 0 {
+			time.Sleep(time.Second * 5)
+			continue
+		}
+
+		logs, err := QueryLog(cli, ctx, startBlock, toBlock)
+		if err != nil {
+			log.Print(err)
+			continue
+		}
+
+		for _, logE := range logs {
+			tokenLockedInfo, err := ParseTokenLocked(abiObj, logE)
+			if err != nil {
+				log.Fatal(err)
+			}
+			mintOnDip(tokenLockedInfo, logE.TxHash)
+			time.Sleep(time.Second * 10)
+		}
+	}
+}
+
+func main() {
 	cli, err := ethclient.Dial("ws://localhost:8546")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	erc20Addr := common.HexToAddress(ethDipManagerAddr)
-
-	account := common.HexToAddress("0x0dd023d5c543054c8612a2291b647c32d5714f51")
-	balance, err := cli.BalanceAt(context.Background(), account, nil)
+	headerChan := make(chan *types.Header)
+	headerSub, err := cli.SubscribeNewHead(context.Background(), headerChan)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(balance)
-
-	fbalance := new(big.Float)
-	fbalance.SetString(balance.String())
-	ethValue := new(big.Float).Quo(fbalance, big.NewFloat(math.Pow10(18)))
-
-	fmt.Println(ethValue)
-
-	query := ethereum.FilterQuery{
-		Addresses: []common.Address{
-			erc20Addr,
-		},
-	}
-
-	logs := make(chan types.Log)
-	sub, err := cli.SubscribeFilterLogs(context.Background(), query, logs)
-	if err != nil {
-		log.Fatal(err)
-	}
+	go LogProcess(cli, context.Background())
 
 	for {
 		select {
-		case err := <-sub.Err():
+		case err := <-headerSub.Err():
 			log.Fatal(err)
-		case logE := <-logs:
-			logString, _ := logE.MarshalJSON()
-			fmt.Println(string(logString))
-
-			tokenLockedEvent, err := ParseTokenLocked(abiObj, logE)
+		case newHeader := <-headerChan:
+			headerJson, err := newHeader.MarshalJSON()
 			if err != nil {
 				log.Print(err)
-				continue
 			}
-
-			go mintOnDip(tokenLockedEvent, logE.TxHash)
+			gRWLock.Lock()
+			headerBlock = newHeader.Number.Int64()
+			gRWLock.Unlock()
+			log.Print(string(headerJson))
 		}
 	}
 }

@@ -1,5 +1,5 @@
 keystore:
-  KeyStoreFileAbsPath: "/Users/sun/go/src/github.com/Dipper-Labs/bridge/config/keystore"
+  KeyStoreFileAbsPath: "/Users/sun/go/src/github.com/Dipper-Labs/dip-bridge/config/keystore"
   KeyStorePasswd: "11111111"
 
 endpoint:

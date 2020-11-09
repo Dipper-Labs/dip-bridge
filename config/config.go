@@ -15,7 +15,8 @@ const (
 	DefaultRPCEndpoint           = "http://127.0.0.1:26657"
 	DefaultChainID               = "dip-chain"
 	DefaultTxDefaultGas          = uint64(200000)
-	DefaultTxDefaultFeeAmount    = int64(500000)
+	DefaultGasPrice              = 6000000
+	DefaultTxDefaultFeeAmount    = int64(DefaultTxDefaultGas * DefaultGasPrice)
 )
 
 var (
