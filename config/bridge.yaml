@@ -1,0 +1,18 @@
+dipSdk:
+  DipSdkCfgFileAbsPath: "/Users/sun/go/src/github.com/Dipper-Labs/dip-bridge/config/dip_sdk.yaml"
+
+dipChain:
+  DipManagerAddr: "dip16qe2drpsxtdgmpw0pxhte649gzezg4e5q8zzes"
+  AbiFileAbsPath: "/Users/sun/go/src/github.com/Dipper-Labs/bridge/contracts/dip_contracts/c.abi"
+
+ethChain:
+  WsEndpoint: "ws://localhost:8546"
+  DipManagerAddr: "0x44A25c7dD6031Fa3E9A4f60b29cE8f9c27132ac8"
+  DipManagerAbi: "/Users/sun/go/src/github.com/Dipper-Labs/dip-bridge/contracts/eth_contracts/dipport.abi"
+  StartBlockNumber: 5000
+  ConfirmBlockCount: 20
+
+
+redis:
+  Endpoint: "localhost:6379"
+  Password: ""

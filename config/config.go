@@ -1,87 +1,107 @@
 package config
 
 import (
-	"errors"
-	"fmt"
 	"io/ioutil"
 
 	oconfig "github.com/olebedev/config"
 )
 
 const (
-	DefautlKeyStoreFileAbsPath   = "/Users/sun/go/src/github.com/Dipper-Labs/go-sdk/config/keystore"
-	DefaultKeyStorePasswd        = "11111111"
-	DefaultLiteClientRpcEndpoint = "http://127.0.0.1:1317"
-	DefaultRPCEndpoint           = "http://127.0.0.1:26657"
-	DefaultChainID               = "dip-chain"
-	DefaultTxDefaultGas          = uint64(200000)
-	DefaultGasPrice              = 6000000
-	DefaultTxDefaultFeeAmount    = int64(DefaultTxDefaultGas * DefaultGasPrice)
+	// cfg for dip chain
+	DefautlDipSdkCfgFileAbsPath   = "/Users/sun/go/src/github.com/Dipper-Labs/dip-bridge/config/dip_sdk.yaml"
+	DefaultDipChainDipManagerAddr = "dip16qe2drpsxtdgmpw0pxhte649gzezg4e5q8zzes"
+	DefaultDipChainDipManagerAbi  = "/Users/sun/go/src/github.com/Dipper-Labs/bridge/contracts/dip_contracts/c.abi"
+
+	// cfg for eth chain
+	DefaultEthChainWsEndpoint        = "ws://localhost:8546"
+	DefaultEthChainDipManagerAddr    = "0x44A25c7dD6031Fa3E9A4f60b29cE8f9c27132ac8"
+	DefaultEthChainDipManagerAbi     = "/Users/sun/go/src/github.com/Dipper-Labs/dip-bridge/contracts/eth_contracts/dipport.abi"
+	DefaultEthChainStartBlockNumber  = int64(10000)
+	DefaultEthChainConfirmBlockCount = int64(20)
+
+	// cfg for redis
+	DefaultRedisEndpoint = "localhost:6379"
+	DefaultRedisPassword = ""
 )
 
 var (
-	KeyStoreFileAbsPath   = DefautlKeyStoreFileAbsPath
-	KeyStorePasswd        = DefaultKeyStorePasswd
-	LiteClientRpcEndpoint = DefaultLiteClientRpcEndpoint
-	RPCEndpoint           = DefaultRPCEndpoint
-	ChainID               = DefaultChainID
-	TxDefaultGas          = DefaultTxDefaultGas
-	TxDefaultFeeAmount    = DefaultTxDefaultFeeAmount
+	// cfg for dip chain
+	DipSdkCfgFileAbsPath   = DefautlDipSdkCfgFileAbsPath
+	DipChainDipManagerAddr = DefaultDipChainDipManagerAddr
+	DipChainDipManagerAbi  = DefaultDipChainDipManagerAbi
+
+	// cfg for eth chain
+	EthChainWsEndpoint        = DefaultEthChainWsEndpoint
+	EthChainDipManagerAddr    = DefaultEthChainDipManagerAddr
+	EthChainDipManagerAbi     = DefaultEthChainDipManagerAbi
+	EthChainStartBlockNumber  = DefaultEthChainStartBlockNumber
+	EthChainConfirmBlockCount = DefaultEthChainConfirmBlockCount
+
+	// cfg for redis
+	RedisEndpoint = DefaultRedisEndpoint
+	RedisPassword = DefaultRedisPassword
 )
 
-func Init(sdkConfigFileAbsPath string) {
-	data, err := ioutil.ReadFile(sdkConfigFileAbsPath)
+func Init(configFileAbsPath string) {
+	data, err := ioutil.ReadFile(configFileAbsPath)
 	if err != nil {
 		panic(err)
 	}
 
-	SDK, err := oconfig.ParseYaml(string(data))
+	cfgInfo, err := oconfig.ParseYaml(string(data))
 	if err != nil {
 		panic(err)
 	}
 
-	KeyStoreFileAbsPath, err = SDK.String("keystore.KeyStoreFileAbsPath")
+	DipSdkCfgFileAbsPath, err = cfgInfo.String("dipSdk.DipSdkCfgFileAbsPath")
 	if err != nil {
 		panic(err)
 	}
 
-	KeyStorePasswd, err = SDK.String("keystore.KeyStorePasswd")
+	DipChainDipManagerAddr, err = cfgInfo.String("dipChain.DipManagerAddr")
 	if err != nil {
 		panic(err)
 	}
 
-	LiteClientRpcEndpoint, err = SDK.String("endpoint.LiteClientRpcEndpoint")
+	DipChainDipManagerAbi, err = cfgInfo.String("dipChain.AbiFileAbsPath")
 	if err != nil {
 		panic(err)
 	}
 
-	LiteClientRpcEndpoint, err = SDK.String("endpoint.LiteClientRpcEndpoint")
+	EthChainWsEndpoint, err = cfgInfo.String("ethChain.WsEndpoint")
 	if err != nil {
 		panic(err)
 	}
 
-	ChainID, err = SDK.String("ChainID")
+	EthChainDipManagerAddr, err = cfgInfo.String("ethChain.DipManagerAddr")
 	if err != nil {
 		panic(err)
 	}
 
-	tmpTxDefaultGas, err := SDK.Int("feeParams.TxDefaultGas")
+	EthChainDipManagerAbi, err = cfgInfo.String("ethChain.DipManagerAbi")
 	if err != nil {
 		panic(err)
 	}
 
-	if tmpTxDefaultGas <= 0 {
-		panic(errors.New(fmt.Sprintf("feeParams.TxDefaultGas must > 0")))
+	StartBlockNumber, err := cfgInfo.Int("ethChain.StartBlockNumber")
+	if err != nil {
+		panic(err)
 	}
-	TxDefaultGas = uint64(tmpTxDefaultGas)
+	EthChainStartBlockNumber = int64(StartBlockNumber)
 
-	tmpTxDefaultFeeAmount, err := SDK.Int("feeParams.TxDefaultFeeAmount")
+	ConfirmBlockCount, err := cfgInfo.Int("ethChain.ConfirmBlockCount")
+	if err != nil {
+		panic(err)
+	}
+	EthChainConfirmBlockCount = int64(ConfirmBlockCount)
+
+	RedisEndpoint, err = cfgInfo.String("redis.Endpoint")
 	if err != nil {
 		panic(err)
 	}
 
-	if tmpTxDefaultFeeAmount <= 0 {
-		panic(errors.New(fmt.Sprintf("feeParams.tmpTxDefaultFeeAmount must > 0")))
+	RedisPassword, err = cfgInfo.String("redis.Password")
+	if err != nil {
+		panic(err)
 	}
-	TxDefaultFeeAmount = int64(tmpTxDefaultFeeAmount)
 }
