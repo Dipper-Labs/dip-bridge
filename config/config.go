@@ -13,11 +13,12 @@ const (
 	DefaultDipChainDipManagerAbi  = "/Users/sun/go/src/github.com/Dipper-Labs/bridge/contracts/dip_contracts/c.abi"
 
 	// cfg for eth chain
-	DefaultEthChainWsEndpoint        = "ws://localhost:8546"
-	DefaultEthChainDipManagerAddr    = "0x44A25c7dD6031Fa3E9A4f60b29cE8f9c27132ac8"
-	DefaultEthChainDipManagerAbi     = "/Users/sun/go/src/github.com/Dipper-Labs/dip-bridge/contracts/eth_contracts/dipport.abi"
-	DefaultEthChainStartBlockNumber  = int64(10000)
-	DefaultEthChainConfirmBlockCount = int64(20)
+	DefaultEthChainWsEndpoint                = "ws://localhost:8546"
+	DefaultEthChainDipManagerAddr            = "0x44A25c7dD6031Fa3E9A4f60b29cE8f9c27132ac8"
+	DefaultEthChainDipManagerAbi             = "/Users/sun/go/src/github.com/Dipper-Labs/dip-bridge/contracts/eth_contracts/dipport.abi"
+	DefaultEthChainStartBlockNumber          = int64(10000)
+	DefaultEthChainConfirmBlockCount         = int64(20)
+	DefaultEthChainStartBlockNumberFromRedis = false
 
 	// cfg for redis
 	DefaultRedisEndpoint = "localhost:6379"
@@ -31,11 +32,12 @@ var (
 	DipChainDipManagerAbi  = DefaultDipChainDipManagerAbi
 
 	// cfg for eth chain
-	EthChainWsEndpoint        = DefaultEthChainWsEndpoint
-	EthChainDipManagerAddr    = DefaultEthChainDipManagerAddr
-	EthChainDipManagerAbi     = DefaultEthChainDipManagerAbi
-	EthChainStartBlockNumber  = DefaultEthChainStartBlockNumber
-	EthChainConfirmBlockCount = DefaultEthChainConfirmBlockCount
+	EthChainWsEndpoint                = DefaultEthChainWsEndpoint
+	EthChainDipManagerAddr            = DefaultEthChainDipManagerAddr
+	EthChainDipManagerAbi             = DefaultEthChainDipManagerAbi
+	EthChainStartBlockNumber          = DefaultEthChainStartBlockNumber
+	EthChainConfirmBlockCount         = DefaultEthChainConfirmBlockCount
+	EthChainStartBlockNumberFromRedis = DefaultEthChainStartBlockNumberFromRedis
 
 	// cfg for redis
 	RedisEndpoint = DefaultRedisEndpoint
@@ -94,6 +96,11 @@ func Init(configFileAbsPath string) {
 		panic(err)
 	}
 	EthChainConfirmBlockCount = int64(ConfirmBlockCount)
+
+	EthChainStartBlockNumberFromRedis, err = cfgInfo.Bool("ethChain.StartBlockNumberFromRedis")
+	if err != nil {
+		panic(err)
+	}
 
 	RedisEndpoint, err = cfgInfo.String("redis.Endpoint")
 	if err != nil {

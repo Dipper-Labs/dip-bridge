@@ -14,7 +14,7 @@ const (
 )
 
 var (
-	logger = log.New(os.Stdout, "redis.", 0)
+	logger = log.New(os.Stdout, "redis-", 0)
 )
 
 type redisCli struct {

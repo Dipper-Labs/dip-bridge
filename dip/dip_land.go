@@ -21,7 +21,7 @@ const (
 )
 
 var (
-	logger = log.New(os.Stdout, "dip.", 0)
+	logger = log.New(os.Stdout, "dip_land-", 0)
 )
 
 type dipLand struct {

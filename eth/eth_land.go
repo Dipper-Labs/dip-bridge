@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	logger = log.New(os.Stdout, "eth.", 0)
+	logger = log.New(os.Stdout, "eth_land-", 0)
 )
 
 type ethLand struct {

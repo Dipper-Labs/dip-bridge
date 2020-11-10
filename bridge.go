@@ -18,7 +18,7 @@ import (
 )
 
 var (
-	logger = log.New(os.Stdout, "bridge.", 0)
+	logger = log.New(os.Stdout, "bridge-", 0)
 )
 
 type Bridge struct {
@@ -49,13 +49,13 @@ func (bridge *Bridge) UpdateEthHeaderBlock(HeaderBlock int64) {
 func (bridge *Bridge) calcFromBlock(ctx context.Context) int64 {
 	fromBlock := config.EthChainStartBlockNumber
 
-	ethBlockCursor, err := bridge.GetEthBlockCursor(ctx)
-	if err != nil {
-		logger.Fatal(err)
-	}
+	if config.EthChainStartBlockNumberFromRedis {
+		ethBlockCursor, err := bridge.GetEthBlockCursor(ctx)
+		if err != nil {
+			logger.Fatal(err)
+		}
 
-	if ethBlockCursor > 0 { // min[config.EthChainStartBlockNumber, redis.EthBlockCursor] as fromBlock
-		if fromBlock > ethBlockCursor {
+		if ethBlockCursor > 0 {
 			fromBlock = ethBlockCursor
 		}
 	}
@@ -72,13 +72,12 @@ func (bridge *Bridge) RunBridge(ctx context.Context) {
 	fromBlock := bridge.calcFromBlock(ctx)
 	ethDipManagerAddr := common.HexToAddress(config.EthChainDipManagerAddr)
 
-	var maximumBlock uint64 = 0
 	for {
 		bridge.ethHeaderBlockRWLock.RLock()
 		toBlock := bridge.ethHeaderBlock - config.EthChainConfirmBlockCount
 		bridge.ethHeaderBlockRWLock.RUnlock()
 
-		if toBlock <= 0 {
+		if toBlock <= fromBlock {
 			logger.Println("no block to process, wait 1 second")
 			time.Sleep(time.Second * 1)
 			continue
@@ -90,10 +89,6 @@ func (bridge *Bridge) RunBridge(ctx context.Context) {
 		}
 
 		for _, logE := range logs {
-			if logE.BlockNumber > maximumBlock {
-				maximumBlock = logE.BlockNumber
-			}
-
 			tokenLockedInfo, err := util.ParseTokenLocked(abiObj, logE)
 			if err != nil {
 				logger.Fatal(err)
@@ -118,8 +113,8 @@ func (bridge *Bridge) RunBridge(ctx context.Context) {
 			logger.Println("txId:[", logE.TxHash.String(), "] finished")
 		}
 
-		bridge.SetEthBlockCursor(ctx, int64(maximumBlock))
-		logger.Println("finished eth block: ", maximumBlock)
-		fromBlock = int64(maximumBlock) + 1
+		bridge.SetEthBlockCursor(ctx, toBlock)
+		logger.Println("finished eth block: ", toBlock)
+		fromBlock = toBlock + 1
 	}
 }
