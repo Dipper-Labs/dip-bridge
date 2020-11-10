@@ -40,7 +40,7 @@ func (c *redisCli) get(ctx context.Context, key string) string {
 	val, err := c.c.Get(ctx, key).Result()
 	if err != nil {
 		if err != redis.Nil {
-			log.Fatal("do redis get failed: [", err, "], key: [", key, "]")
+			log.Fatalf("do redis get failed:[%v],key:[%s]\n", err, key)
 		}
 	}
 
@@ -50,7 +50,7 @@ func (c *redisCli) get(ctx context.Context, key string) string {
 func (c *redisCli) set(ctx context.Context, key, value string) {
 	err := c.c.Set(ctx, key, value, 0).Err()
 	if err != nil {
-		log.Fatal("do redis set failed: [", err, "], key: [", key, "], value: [", value, "]")
+		log.Fatalf("do redis set failed:[%v],key:[%s],value:[%s]\n", err, key, value)
 	}
 }
 

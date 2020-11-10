@@ -30,7 +30,7 @@ type DipLand interface {
 func NewDipLand(sdkCfgPath string) DipLand {
 	cli, err := client.NewClient(sdkCfgPath)
 	if err != nil {
-		log.Fatal("do NewClient failed: [", err, "]")
+		log.Fatalf("do NewClient failed:[%v]\n", err)
 	}
 
 	return &dipLand{DipCli: cli}
@@ -39,14 +39,14 @@ func NewDipLand(sdkCfgPath string) DipLand {
 func (dl *dipLand) MintDip(tokenLockedInfo *types.TypesTokenLocked, hash common.Hash) (gosdktypes.BroadcastTxResult, error) {
 	toAddr, err := sdk.AccAddressFromBech32(tokenLockedInfo.To)
 	if err != nil {
-		log.Fatal("do AccAddressFromBech32 failed: [", err, "], to: [", tokenLockedInfo.To, "]")
+		log.Fatalf("do AccAddressFromBech32 failed:[%v],to:[%s]\n", err, tokenLockedInfo.To)
 	}
 
 	var p [20]byte
 	copy(p[:], toAddr)
 	payload, err := util.BuildPayloadByABIFile(config.DipChainDipManagerAbi, funcName, hash, p, tokenLockedInfo.Amount)
 	if err != nil {
-		log.Fatal("do BuildPayloadByABIFile failed: [", err, "], hash: [", hash.String(), "], to: [", tokenLockedInfo.To, "], amount: [", tokenLockedInfo.Amount.String(), "]")
+		log.Fatalf("do BuildPayloadByABIFile failed:[%v],hash:[%s],to:[%s],amount:[%v]\n", err, hash.String(), tokenLockedInfo.To, tokenLockedInfo.Amount.Uint64())
 	}
 
 	return dl.DipCli.ContractCall(config.DipChainDipManagerAddr, payload, sdk.NewCoin(sdk.NativeTokenName, sdk.NewInt(0)), true)

@@ -48,7 +48,7 @@ func (bridge *Bridge) calcFromBlock(ctx context.Context) int64 {
 	if config.EthChainStartBlockNumberFromRedis {
 		ethBlockCursor, err := bridge.GetEthBlockCursor(ctx)
 		if err != nil {
-			log.Fatal("do GetEthBlockCursor failed: [", err, "]")
+			log.Fatalf("do GetEthBlockCursor failed:[%v]\n", err)
 		}
 
 		if ethBlockCursor > 0 {
@@ -62,7 +62,7 @@ func (bridge *Bridge) calcFromBlock(ctx context.Context) int64 {
 func (bridge *Bridge) RunBridge(ctx context.Context) {
 	abiObj, err := util.AbiFromFile(config.EthChainDipManagerAbi)
 	if err != nil {
-		log.Fatal("do AbiFromFile failed: [", err, "]")
+		log.Fatalf("do AbiFromFile failed:[%v]\n", err)
 	}
 
 	fromBlock := bridge.calcFromBlock(ctx)
@@ -81,14 +81,14 @@ func (bridge *Bridge) RunBridge(ctx context.Context) {
 
 		logs, err := bridge.QueryTokenLockedLog(ctx, ethDipManagerAddr, fromBlock, toBlock)
 		if err != nil {
-			log.Fatal("do QueryTokenLockedLog failed: [", err, "], fromBlock: ", fromBlock, ", toBlock: ", toBlock)
+			log.Fatalf("do QueryTokenLockedLog failed:[%v],fromBlock:%v, toBlock:%v\n", err, fromBlock, toBlock)
 		}
 
 		for _, logE := range logs {
 			tokenLockedInfo, err := util.ParseTokenLocked(abiObj, logE)
 			if err != nil {
 				logJson, _ := logE.MarshalJSON()
-				log.Fatal("do ParseTokenLocked failed: [", err, "], logE: [", string(logJson), "]")
+				log.Fatalf("do ParseTokenLocked failed:[%v],logE:[%s]\n", err, string(logJson))
 			}
 
 			if bridge.EthTxidExist(ctx, logE.TxHash.String()) {
@@ -99,12 +99,12 @@ func (bridge *Bridge) RunBridge(ctx context.Context) {
 			result, err := bridge.MintDip(tokenLockedInfo, logE.TxHash)
 			if err != nil {
 				tokenLockedInfoJson, _ := json.Marshal(tokenLockedInfo)
-				log.Fatal("do MintDip failed: [", err, "], tokenLockedInfo: [", string(tokenLockedInfoJson), "], txHash: ", logE.TxHash.String())
+				log.Fatalf("do MintDip failed:[%v],tokenLockedInfo:[%s],txHash:%s\n", err, string(tokenLockedInfoJson), logE.TxHash.String())
 			}
 
 			dipReceipt, err := json.Marshal(result)
 			if err != nil {
-				log.Fatal("do Marshal failed: [", err, "], dipper network txid: ", result.CommitResult.Hash.String())
+				log.Fatalf("do Marshal failed:[%v],dipper network txid:%s\n", err, result.CommitResult.Hash.String())
 			}
 
 			bridge.SaveEthTxidProcessReceiptOnDip(ctx, logE.TxHash.String(), string(dipReceipt))

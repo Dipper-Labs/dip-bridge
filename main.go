@@ -25,7 +25,7 @@ func main() {
 			bridge.UpdateEthHeaderBlock(newHeader.Number.Int64())
 
 		case err := <-sub.Err():
-			log.Fatal("Ethereum new header subscription broken: [", err, "]")
+			log.Fatalf("Ethereum new header subscription broken:[%v]\n", err)
 		}
 	}
 }
