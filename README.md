@@ -42,4 +42,4 @@ dip-bridge ./config/bridge.yaml
 ```
 
 ## how to do ERC20 mapping
-please read UserGuide.md
+* [UserGuide](./UserGuide.md)
