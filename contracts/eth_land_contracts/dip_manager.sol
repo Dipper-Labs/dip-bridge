@@ -18,10 +18,10 @@ contract DipManager {
         erc20Addr = addr;
     }
 
-    function LockToken(string memory dipAddr, uint256 amount) public {
+    function LockToken(string memory w, uint256 amount) public {
         IERC20 dipERC20 = IERC20(erc20Addr);
         dipERC20.safeTransferFrom(msg.sender, address(this), amount);
-        lockInfo[msg.sender][dipAddr] = lockInfo[msg.sender][dipAddr] + amount;
+        lockInfo[msg.sender][dipAddr] = lockInfo[msg.sender][dipAddr].add(amount);
         emit TokenLocked(msg.sender, dipAddr, amount);
     }
 }
