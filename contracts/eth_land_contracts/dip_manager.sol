@@ -7,27 +7,22 @@ import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contr
 contract DipManager {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
-    
+
     event TokenLocked(address indexed from, string to, uint256 amount);
-    
-    mapping(address => mapping(string => uint256)) private lockInfo;
-    
+
+    mapping(address => mapping(string => uint256)) public lockInfo;
+
     address public erc20Addr;
-    
+
     constructor(address addr) public {
         erc20Addr = addr;
     }
-    
-    function lockToken(string memory dipAddr, uint256 amount) public {
-        IERC20 ethToken = IERC20(erc20Addr);
-        ethToken.safeTransferFrom(msg.sender, address(this), amount);
+
+    function LockToken(string memory dipAddr, uint256 amount) public {
+        IERC20 dipERC20 = IERC20(erc20Addr);
+        dipERC20.safeTransferFrom(msg.sender, address(this), amount);
         lockInfo[msg.sender][dipAddr] = lockInfo[msg.sender][dipAddr] + amount;
         emit TokenLocked(msg.sender, dipAddr, amount);
     }
-    
-    function unlockToken(string memory dipAddr, uint256 amount) public {
-        
-    }
 }
-
 

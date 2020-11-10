@@ -29,7 +29,7 @@ type dipLand struct {
 }
 
 type DipLand interface {
-	MintDip(tokenLockedInfo *types.MainTokenLocked, hash common.Hash) (gosdktypes.BroadcastTxResult, error)
+	MintDip(tokenLockedInfo *types.TypesTokenLocked, hash common.Hash) (gosdktypes.BroadcastTxResult, error)
 }
 
 func NewDipLand(sdkCfgPath string) DipLand {
@@ -41,7 +41,7 @@ func NewDipLand(sdkCfgPath string) DipLand {
 	return &dipLand{DipCli: cli}
 }
 
-func (dl *dipLand) MintDip(tokenLockedInfo *types.MainTokenLocked, hash common.Hash) (gosdktypes.BroadcastTxResult, error) {
+func (dl *dipLand) MintDip(tokenLockedInfo *types.TypesTokenLocked, hash common.Hash) (gosdktypes.BroadcastTxResult, error) {
 	toAddr, err := sdk.AccAddressFromBech32(tokenLockedInfo.To)
 	if err != nil {
 		log.Fatal(err)

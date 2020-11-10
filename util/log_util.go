@@ -24,8 +24,8 @@ func UnpackEthLog(out interface{}, abiObj *abi.ABI, event string, log ethtypes.L
 	return abi.ParseTopics(out, indexed, log.Topics[1:])
 }
 
-func ParseTokenLocked(abiObj *abi.ABI, logE ethtypes.Log) (tokenLockedEvent *types.MainTokenLocked, err error) {
-	tokenLockedEvent = new(types.MainTokenLocked)
+func ParseTokenLocked(abiObj *abi.ABI, logE ethtypes.Log) (tokenLockedEvent *types.TypesTokenLocked, err error) {
+	tokenLockedEvent = new(types.TypesTokenLocked)
 	err = UnpackEthLog(tokenLockedEvent, abiObj, "TokenLocked", logE)
 	if err != nil {
 		return nil, err

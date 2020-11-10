@@ -3,15 +3,15 @@ dipSdk:
 
 dipChain:
   DipManagerAddr: "dip16qe2drpsxtdgmpw0pxhte649gzezg4e5q8zzes"
-  AbiFileAbsPath: "/Users/sun/go/src/github.com/Dipper-Labs/bridge/contracts/dip_contracts/c.abi"
+  AbiFileAbsPath: "/Users/sun/go/src/github.com/Dipper-Labs/dip-bridge/contracts/dip_land_contracts/dip_manager.abi"
 
 ethChain:
   WsEndpoint: "ws://localhost:8546"
   DipManagerAddr: "0x44A25c7dD6031Fa3E9A4f60b29cE8f9c27132ac8"
-  DipManagerAbi: "/Users/sun/go/src/github.com/Dipper-Labs/dip-bridge/contracts/eth_contracts/dipport.abi"
+  DipManagerAbi: "/Users/sun/go/src/github.com/Dipper-Labs/dip-bridge/contracts/eth_land_contracts/dip_manager.abi"
   StartBlockNumber: 1 #扫描事件的开始区块
   StartBlockNumberFromRedis: false #是否从redis加载扫描事件的开始区块，首次启动设置为false，再次启动设置为true，强制从配置文件读取设置为false
-  ConfirmBlockCount: 5 #等待多少个区块确认后再扫描事件
+  ConfirmBlockCount: 50 #等待多少个区块确认后再扫描事件
 
 
 redis:
