@@ -39,7 +39,8 @@ func NewDipLand(sdkCfgPath string) DipLand {
 func (dl *dipLand) MintDip(tokenLockedInfo *types.TypesTokenLocked, hash common.Hash) (gosdktypes.BroadcastTxResult, error) {
 	toAddr, err := sdk.AccAddressFromBech32(tokenLockedInfo.To)
 	if err != nil {
-		log.Fatalf("do AccAddressFromBech32 failed:[%v],to:[%s]\n", err, tokenLockedInfo.To)
+		log.Printf("do AccAddressFromBech32 failed:[%v],to:[%s]\n", err, tokenLockedInfo.To)
+		return gosdktypes.BroadcastTxResult{}, err
 	}
 
 	var p [20]byte

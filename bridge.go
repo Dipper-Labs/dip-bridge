@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"sync"
 	"time"
@@ -103,7 +104,11 @@ func (bridge *Bridge) RunBridge(ctx context.Context) {
 			result, err := bridge.MintDip(tokenLockedInfo, logE.TxHash)
 			if err != nil {
 				tokenLockedInfoJson, _ := json.Marshal(tokenLockedInfo)
-				log.Fatalf("do MintDip failed:[%v],tokenLockedInfo:[%s],txHash:%s\n", err, string(tokenLockedInfoJson), logE.TxHash.String())
+				failedInfo := fmt.Sprintf("do MintDip failed:[%v],tokenLockedInfo:[%s],txHash:%s\n", err, string(tokenLockedInfoJson), logE.TxHash.String())
+				log.Println(failedInfo)
+				bridge.SaveEthTxidProcessReceiptOnDip(ctx, logE.TxHash.String(), "failed")
+				bridge.SaveEthTxidProcessReceiptOnDip(ctx, fmt.Sprintf("failed.%s", logE.TxHash.String()), failedInfo)
+				continue
 			}
 
 			dipReceipt, err := json.Marshal(result)
