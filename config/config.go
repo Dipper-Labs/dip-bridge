@@ -7,12 +7,12 @@ import (
 )
 
 const (
-	// cfg for dip chain
+	// cfg for dipper network
 	DefautlDipSdkCfgFileAbsPath   = "/Users/sun/go/src/github.com/Dipper-Labs/dip-bridge/config/dip_sdk.yaml"
 	DefaultDipChainDipManagerAddr = "dip16qe2drpsxtdgmpw0pxhte649gzezg4e5q8zzes"
 	DefaultDipChainDipManagerAbi  = "/Users/sun/go/src/github.com/Dipper-Labs/dip-bridge/contracts/dip_land_contracts/dip_manager.abi"
 
-	// cfg for eth chain
+	// cfg for ethereum
 	DefaultEthChainWsEndpoint                = "ws://localhost:8546"
 	DefaultEthChainDipManagerAddr            = "0x44A25c7dD6031Fa3E9A4f60b29cE8f9c27132ac8"
 	DefaultEthChainDipManagerAbi             = "/Users/sun/go/src/github.com/Dipper-Labs/dip-bridge/contracts/eth_land_contracts/dip_manager.abi"
@@ -20,24 +20,30 @@ const (
 	DefaultEthChainConfirmBlockCount         = int64(20)
 	DefaultEthChainStartBlockNumberFromRedis = false
 
+	// cfg for bridge
+	DefaultDetectIntervalInSeconde = 1
+
 	// cfg for redis
 	DefaultRedisEndpoint = "localhost:6379"
 	DefaultRedisPassword = ""
 )
 
 var (
-	// cfg for dip chain
+	// cfg for dipper network
 	DipSdkCfgFileAbsPath   = DefautlDipSdkCfgFileAbsPath
 	DipChainDipManagerAddr = DefaultDipChainDipManagerAddr
 	DipChainDipManagerAbi  = DefaultDipChainDipManagerAbi
 
-	// cfg for eth chain
+	// cfg for ethereum
 	EthChainWsEndpoint                = DefaultEthChainWsEndpoint
 	EthChainDipManagerAddr            = DefaultEthChainDipManagerAddr
 	EthChainDipManagerAbi             = DefaultEthChainDipManagerAbi
 	EthChainStartBlockNumber          = DefaultEthChainStartBlockNumber
 	EthChainConfirmBlockCount         = DefaultEthChainConfirmBlockCount
 	EthChainStartBlockNumberFromRedis = DefaultEthChainStartBlockNumberFromRedis
+
+	// cfg for bridge
+	DetectIntervalInSeconde = DefaultDetectIntervalInSeconde
 
 	// cfg for redis
 	RedisEndpoint = DefaultRedisEndpoint
@@ -55,6 +61,7 @@ func Init(configFileAbsPath string) {
 		panic(err)
 	}
 
+	// cfg for dipper network
 	DipSdkCfgFileAbsPath, err = cfgInfo.String("dipSdk.DipSdkCfgFileAbsPath")
 	if err != nil {
 		panic(err)
@@ -70,6 +77,7 @@ func Init(configFileAbsPath string) {
 		panic(err)
 	}
 
+	// cfg for ethereum
 	EthChainWsEndpoint, err = cfgInfo.String("ethChain.WsEndpoint")
 	if err != nil {
 		panic(err)
@@ -102,6 +110,14 @@ func Init(configFileAbsPath string) {
 		panic(err)
 	}
 
+	// cfg for bridge
+	detectIntervalInSeconde, err := cfgInfo.Int("bridge.detectIntervalInSeconde")
+	if err != nil {
+		panic(err)
+	}
+	DetectIntervalInSeconde = detectIntervalInSeconde
+
+	// cfg for redis
 	RedisEndpoint, err = cfgInfo.String("redis.Endpoint")
 	if err != nil {
 		panic(err)

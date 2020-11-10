@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"sync"
 	"time"
@@ -73,8 +74,8 @@ func (bridge *Bridge) RunBridge(ctx context.Context) {
 		bridge.ethHeaderBlockRWLock.RUnlock()
 
 		if toBlock <= fromBlock {
-			log.Println("ping")
-			time.Sleep(time.Second * 10)
+			log.Println(fmt.Sprintf("ping %d secs", config.DetectIntervalInSeconde))
+			time.Sleep(time.Second * time.Duration(config.DetectIntervalInSeconde))
 			continue
 		}
 

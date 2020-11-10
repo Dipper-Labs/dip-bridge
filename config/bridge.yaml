@@ -11,8 +11,10 @@ ethChain:
   DipManagerAbi: "/Users/sun/go/src/github.com/Dipper-Labs/dip-bridge/contracts/eth_land_contracts/dip_manager.abi"
   StartBlockNumber: 1 #扫描事件的开始区块
   StartBlockNumberFromRedis: false #是否从redis加载扫描事件的开始区块，首次启动设置为false，再次启动设置为true，强制从配置文件读取设置为false
-  ConfirmBlockCount: 5 #等待多少个区块确认后再扫描事件
+  ConfirmBlockCount: 50 #等待多少个区块确认后再扫描事件
 
+bridge:
+  detectIntervalInSeconde: 10
 
 redis:
   Endpoint: "localhost:6379"
