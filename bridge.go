@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 	"sync"
 	"time"
@@ -74,7 +73,7 @@ func (bridge *Bridge) RunBridge(ctx context.Context) {
 		bridge.ethHeaderBlockRWLock.RUnlock()
 
 		if toBlock <= fromBlock {
-			log.Println(fmt.Sprintf("ping %d secs", config.DetectIntervalInSeconde))
+			log.Printf("ping %d secs", config.DetectIntervalInSeconde)
 			time.Sleep(time.Second * time.Duration(config.DetectIntervalInSeconde))
 			continue
 		}
@@ -92,7 +91,7 @@ func (bridge *Bridge) RunBridge(ctx context.Context) {
 			}
 
 			if bridge.EthTxidExist(ctx, logE.TxHash.String()) {
-				log.Println("txId:[", logE.TxHash.String(), "] already processed")
+				log.Printf("txId:[%s] already processed", logE.TxHash.String())
 				continue
 			}
 
@@ -108,11 +107,11 @@ func (bridge *Bridge) RunBridge(ctx context.Context) {
 			}
 
 			bridge.SaveEthTxidProcessReceiptOnDip(ctx, logE.TxHash.String(), string(dipReceipt))
-			log.Println("txId:[", logE.TxHash.String(), "] finished")
+			log.Printf("txId:[%s] finished", logE.TxHash.String())
 		}
 
 		bridge.SetEthBlockCursor(ctx, toBlock)
-		log.Println("finished eth block: ", toBlock)
+		log.Printf("finished eth block: %v", toBlock)
 		fromBlock = toBlock + 1
 	}
 }
