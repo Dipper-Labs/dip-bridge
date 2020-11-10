@@ -27,7 +27,7 @@ var (
 )
 
 // TypesABI is the input ABI used to generate the binding from.
-const TypesABI = "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"to\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"TokenLocked\",\"type\":\"event\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"string\",\"name\":\"dipAddr\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"LockToken\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"erc20Addr\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"name\":\"lockInfo\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}]"
+const TypesABI = "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"to\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"TokenLocked\",\"type\":\"event\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"string\",\"name\":\"dipAddr\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"LockToken\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"erc20Addr\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"name\":\"lockInfo\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"internalType\":\"string\",\"name\":\"str\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"startIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"endIndex\",\"type\":\"uint256\"}],\"name\":\"substring\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"pure\",\"type\":\"function\"}]"
 
 // Types is an auto generated Go binding around an Ethereum contract.
 type Types struct {
@@ -221,6 +221,32 @@ func (_Types *TypesSession) LockInfo(arg0 common.Address, arg1 string) (*big.Int
 // Solidity: function lockInfo(address , string ) constant returns(uint256)
 func (_Types *TypesCallerSession) LockInfo(arg0 common.Address, arg1 string) (*big.Int, error) {
 	return _Types.Contract.LockInfo(&_Types.CallOpts, arg0, arg1)
+}
+
+// Substring is a free data retrieval call binding the contract method 0x1dcd9b55.
+//
+// Solidity: function substring(string str, uint256 startIndex, uint256 endIndex) constant returns(string)
+func (_Types *TypesCaller) Substring(opts *bind.CallOpts, str string, startIndex *big.Int, endIndex *big.Int) (string, error) {
+	var (
+		ret0 = new(string)
+	)
+	out := ret0
+	err := _Types.contract.Call(opts, out, "substring", str, startIndex, endIndex)
+	return *ret0, err
+}
+
+// Substring is a free data retrieval call binding the contract method 0x1dcd9b55.
+//
+// Solidity: function substring(string str, uint256 startIndex, uint256 endIndex) constant returns(string)
+func (_Types *TypesSession) Substring(str string, startIndex *big.Int, endIndex *big.Int) (string, error) {
+	return _Types.Contract.Substring(&_Types.CallOpts, str, startIndex, endIndex)
+}
+
+// Substring is a free data retrieval call binding the contract method 0x1dcd9b55.
+//
+// Solidity: function substring(string str, uint256 startIndex, uint256 endIndex) constant returns(string)
+func (_Types *TypesCallerSession) Substring(str string, startIndex *big.Int, endIndex *big.Int) (string, error) {
+	return _Types.Contract.Substring(&_Types.CallOpts, str, startIndex, endIndex)
 }
 
 // LockToken is a paid mutator transaction binding the contract method 0xa44ce259.

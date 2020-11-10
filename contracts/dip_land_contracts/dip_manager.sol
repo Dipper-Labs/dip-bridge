@@ -14,7 +14,7 @@ contract DipManager {
         admin = addr;
     }
 
-    function mintToken(bytes32 txid, address payable to, uint256 amount) public {
+    function MintToken(bytes32 txid, address payable to, uint256 amount) public {
         require(txFilter[txid] == false, "txid already processed");
         require(msg.sender == admin, "no authorized account");
 
@@ -24,7 +24,7 @@ contract DipManager {
         emit TokenMinted(txid, to, amount);
     }
 
-    function grant(address addr) public {
+    function Grant(address addr) public {
         require(msg.sender == admin, "no authorized account");
         admin = addr;
     }

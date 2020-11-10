@@ -2,12 +2,12 @@ dipSdk:
   DipSdkCfgFileAbsPath: "/Users/sun/go/src/github.com/Dipper-Labs/dip-bridge/config/dip_sdk.yaml"
 
 dipChain:
-  DipManagerAddr: "dip1fplrdt669qwm6r2hjrmlnl82lmnej77n3g39ll"
+  DipManagerAddr: "dip130vwjx9aednhmgv3w6xjz8e6vcesmvd2sxd96r"
   AbiFileAbsPath: "/Users/sun/go/src/github.com/Dipper-Labs/dip-bridge/contracts/dip_land_contracts/dip_manager.abi"
 
 ethChain:
   WsEndpoint: "ws://localhost:8546"
-  DipManagerAddr: "0x14eE7433769A6F76c9a1efb1b907E0d5AF0AaCED"
+  DipManagerAddr: "0xbfc617C5e0cC53eb9116cbbDB5D78fEfCb61425A"
   DipManagerAbi: "/Users/sun/go/src/github.com/Dipper-Labs/dip-bridge/contracts/eth_land_contracts/dip_manager.abi"
   StartBlockNumber: 1 #扫描事件的开始区块
   StartBlockNumberFromRedis: false #是否从redis加载扫描事件的开始区块，首次启动设置为false，再次启动设置为true，强制从配置文件读取设置为false

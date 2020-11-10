@@ -37,21 +37,6 @@
 		"type": "event"
 	},
 	{
-		"constant": true,
-		"inputs": [],
-		"name": "admin",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"constant": false,
 		"inputs": [
 			{
@@ -60,7 +45,7 @@
 				"type": "address"
 			}
 		],
-		"name": "grant",
+		"name": "Grant",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -85,10 +70,25 @@
 				"type": "uint256"
 			}
 		],
-		"name": "mintToken",
+		"name": "MintToken",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "admin",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{

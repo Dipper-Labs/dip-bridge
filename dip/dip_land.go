@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	funcName = "mintToken"
+	funcName = "MintToken"
 )
 
 type dipLand struct {
