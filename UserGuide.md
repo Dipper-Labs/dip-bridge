@@ -67,5 +67,5 @@ address为账号地址
 ### 4.8 确保交易完成
 
 ## 5. 查看主网账号到账
-5.1 打开主网浏览器: https://explorer.dippernetwork.com/
-5.2 在页面输入你映射的主网地址(例如: dip1kku6g066hzl6pxm7ldf8ydl2wn7damy3q3awl8),点击回车搜索你的账号详情
+### 5.1 打开主网浏览器: https://explorer.dippernetwork.com/
+### 5.2 在页面输入你映射的主网地址(例如: dip1kku6g066hzl6pxm7ldf8ydl2wn7damy3q3awl8),点击回车搜索你的账号详情
