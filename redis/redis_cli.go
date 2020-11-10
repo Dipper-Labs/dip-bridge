@@ -3,7 +3,6 @@ package redis
 import (
 	"context"
 	"log"
-	"os"
 	"strconv"
 
 	"github.com/go-redis/redis/v8"
@@ -11,10 +10,6 @@ import (
 
 const (
 	EthBlockCursorKey = "ethBlockCursor"
-)
-
-var (
-	logger = log.New(os.Stdout, "redis-", 0)
 )
 
 type redisCli struct {
@@ -45,7 +40,7 @@ func (c *redisCli) get(ctx context.Context, key string) string {
 	val, err := c.c.Get(ctx, key).Result()
 	if err != nil {
 		if err != redis.Nil {
-			logger.Fatal("do redis get failed: [", err, "], key: [", key, "]")
+			log.Fatal("do redis get failed: [", err, "], key: [", key, "]")
 		}
 	}
 
@@ -55,7 +50,7 @@ func (c *redisCli) get(ctx context.Context, key string) string {
 func (c *redisCli) set(ctx context.Context, key, value string) {
 	err := c.c.Set(ctx, key, value, 0).Err()
 	if err != nil {
-		logger.Fatal("do redis set failed: [", err, "], key: [", key, "], value: [", value, "]")
+		log.Fatal("do redis set failed: [", err, "], key: [", key, "], value: [", value, "]")
 	}
 }
 

@@ -2,14 +2,13 @@ package dip
 
 import (
 	"log"
-	"os"
 
 	"github.com/ethereum/go-ethereum/common"
 
 	sdk "github.com/Dipper-Labs/Dipper-Protocol/types"
-	gosdktypes "github.com/Dipper-Labs/go-sdk/client/types"
 
 	"github.com/Dipper-Labs/go-sdk/client"
+	gosdktypes "github.com/Dipper-Labs/go-sdk/client/types"
 	"github.com/Dipper-Labs/go-sdk/util"
 
 	"github.com/Dipper-Labs/dip-bridge/config"
@@ -17,11 +16,7 @@ import (
 )
 
 const (
-	funcName = "MintToken"
-)
-
-var (
-	logger = log.New(os.Stdout, "dip_land-", 0)
+	funcName = "mintToken"
 )
 
 type dipLand struct {
