@@ -1,4 +1,4 @@
-#如何映射
+# 如何映射
 
 ## 1. 浏览器安装MetaMask并导入以太坊账号
 参考MetaMask官方: https://metamask.io/
