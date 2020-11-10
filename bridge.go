@@ -88,13 +88,17 @@ func (bridge *Bridge) RunBridge(ctx context.Context) {
 			log.Printf("got %d Token Locked Event between block[%v, %v]", len(logs), fromBlock, toBlock)
 		}
 
+		logsCount := len(logs)
+		logIndex := 0
 		for _, logE := range logs {
+			logIndex++
+
 			tokenLockedInfo, err := util.ParseTokenLocked(abiObj, logE)
 			if err != nil {
 				logJson, _ := logE.MarshalJSON()
 				log.Fatalf("do ParseTokenLocked failed:[%v],logE:[%s]\n", err, string(logJson))
 			}
-			log.Printf("%v:%s-event[%s:%s:%v]", logE.BlockNumber, logE.TxHash.String(), tokenLockedInfo.From.String(), tokenLockedInfo.To, tokenLockedInfo.Amount.String())
+			log.Printf("[%v/%v]-%v:%s-event[%s:%s:%v]", logIndex, logsCount, logE.BlockNumber, logE.TxHash.String(), tokenLockedInfo.From.String(), tokenLockedInfo.To, tokenLockedInfo.Amount.String())
 
 			if bridge.EthTxidExist(ctx, logE.TxHash.String()) {
 				log.Printf("txId:[%s] already processed", logE.TxHash.String())
