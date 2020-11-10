@@ -5,6 +5,8 @@ import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contr
 contract DipManager {
     using SafeMath for uint256;
 
+    event TokenMinted(bytes32 ethTxid, address to, uint256 amount);
+
     mapping(bytes32 => bool) public txFilter;
     address public admin;
 
@@ -18,6 +20,8 @@ contract DipManager {
 
         to.transfer(amount);
         txFilter[txid] = true;
+
+        emit TokenMinted(txid, to, amount);
     }
 
     function grant(address addr) public {
