@@ -28,7 +28,7 @@ type EthLand interface {
 func NewEthLand(rawUrl string) EthLand {
 	cli, err := ethclient.Dial(rawUrl)
 	if err != nil {
-		logger.Fatal(err)
+		logger.Fatal("do ethclient.Dial failed: [", err, "], rawUrl: [", rawUrl, "]")
 	}
 
 	return &ethLand{EthCli: cli}
@@ -38,7 +38,7 @@ func (el *ethLand) SubscribeNewHead(ctx context.Context) (chan *types.Header, et
 	headerChan := make(chan *types.Header)
 	headerSub, err := el.EthCli.SubscribeNewHead(ctx, headerChan)
 	if err != nil {
-		logger.Fatal(err)
+		logger.Fatal("do SubscribeNewHead failed: [", err, "]")
 	}
 
 	return headerChan, headerSub

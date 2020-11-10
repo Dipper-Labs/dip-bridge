@@ -52,7 +52,7 @@ func (bridge *Bridge) calcFromBlock(ctx context.Context) int64 {
 	if config.EthChainStartBlockNumberFromRedis {
 		ethBlockCursor, err := bridge.GetEthBlockCursor(ctx)
 		if err != nil {
-			logger.Fatal(err)
+			logger.Fatal("do GetEthBlockCursor failed: [", err, "]")
 		}
 
 		if ethBlockCursor > 0 {
@@ -66,7 +66,7 @@ func (bridge *Bridge) calcFromBlock(ctx context.Context) int64 {
 func (bridge *Bridge) RunBridge(ctx context.Context) {
 	abiObj, err := util.AbiFromFile(config.EthChainDipManagerAbi)
 	if err != nil {
-		logger.Fatal(err)
+		logger.Fatal("do AbiFromFile failed: [", err, "]")
 	}
 
 	fromBlock := bridge.calcFromBlock(ctx)
@@ -85,13 +85,14 @@ func (bridge *Bridge) RunBridge(ctx context.Context) {
 
 		logs, err := bridge.QueryTokenLockedLog(ctx, ethDipManagerAddr, fromBlock, toBlock)
 		if err != nil {
-			logger.Fatal(err)
+			logger.Fatal("do QueryTokenLockedLog failed: [", err, "], fromBlock: ", fromBlock, ", toBlock: ", toBlock)
 		}
 
 		for _, logE := range logs {
 			tokenLockedInfo, err := util.ParseTokenLocked(abiObj, logE)
 			if err != nil {
-				logger.Fatal(err)
+				logJson, _ := logE.MarshalJSON()
+				logger.Fatal("do ParseTokenLocked failed: [", err, "], logE: [", string(logJson), "]")
 			}
 
 			if bridge.EthTxidExist(ctx, logE.TxHash.String()) {
@@ -101,12 +102,13 @@ func (bridge *Bridge) RunBridge(ctx context.Context) {
 
 			result, err := bridge.MintDip(tokenLockedInfo, logE.TxHash)
 			if err != nil {
-				logger.Fatal(err)
+				tokenLockedInfoJson, _ := json.Marshal(tokenLockedInfo)
+				logger.Fatal("do MintDip failed: [", err, "], tokenLockedInfo: [", string(tokenLockedInfoJson), "], txHash: ", logE.TxHash.String())
 			}
 
 			dipReceipt, err := json.Marshal(result)
 			if err != nil {
-				logger.Fatal(err)
+				logger.Fatal("do Marshal failed: [", err, "], dipper network txid: ", result.CommitResult.Hash.String())
 			}
 
 			bridge.SaveEthTxidProcessReceiptOnDip(ctx, logE.TxHash.String(), string(dipReceipt))

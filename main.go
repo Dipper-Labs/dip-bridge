@@ -8,7 +8,7 @@ import (
 
 func main() {
 	if len(os.Args) != 2 {
-		log.Fatal("wrong args")
+		log.Fatal("wrong args. should use by: dip-bridge [config file path]")
 	}
 
 	ctx := context.Background()
@@ -23,7 +23,7 @@ func main() {
 			bridge.UpdateEthHeaderBlock(newHeader.Number.Int64())
 
 		case err := <-sub.Err():
-			log.Fatal(err)
+			log.Fatal("Ethereum new header subscription broken: [", err, "]")
 		}
 	}
 }

@@ -10,12 +10,12 @@ const (
 	// cfg for dip chain
 	DefautlDipSdkCfgFileAbsPath   = "/Users/sun/go/src/github.com/Dipper-Labs/dip-bridge/config/dip_sdk.yaml"
 	DefaultDipChainDipManagerAddr = "dip16qe2drpsxtdgmpw0pxhte649gzezg4e5q8zzes"
-	DefaultDipChainDipManagerAbi  = "/Users/sun/go/src/github.com/Dipper-Labs/bridge/contracts/dip_contracts/c.abi"
+	DefaultDipChainDipManagerAbi  = "/Users/sun/go/src/github.com/Dipper-Labs/dip-bridge/contracts/dip_land_contracts/dip_manager.abi"
 
 	// cfg for eth chain
 	DefaultEthChainWsEndpoint                = "ws://localhost:8546"
 	DefaultEthChainDipManagerAddr            = "0x44A25c7dD6031Fa3E9A4f60b29cE8f9c27132ac8"
-	DefaultEthChainDipManagerAbi             = "/Users/sun/go/src/github.com/Dipper-Labs/dip-bridge/contracts/eth_contracts/dipport.abi"
+	DefaultEthChainDipManagerAbi             = "/Users/sun/go/src/github.com/Dipper-Labs/dip-bridge/contracts/eth_land_contracts/dip_manager.abi"
 	DefaultEthChainStartBlockNumber          = int64(10000)
 	DefaultEthChainConfirmBlockCount         = int64(20)
 	DefaultEthChainStartBlockNumberFromRedis = false
