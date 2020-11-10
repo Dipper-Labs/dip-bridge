@@ -40,3 +40,6 @@ dipcli keys export [your dipper network account address]
 ```
 dip-bridge ./config/bridge.yaml
 ```
+
+## how to do ERC20 mapping
+please read UserGuide.md
