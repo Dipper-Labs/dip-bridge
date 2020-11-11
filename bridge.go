@@ -25,7 +25,8 @@ type Bridge struct {
 	ethHeaderBlockRWLock *sync.RWMutex
 }
 
-func NewBridge() *Bridge {
+func NewBridge(cfgPath string) *Bridge {
+	config.Init(cfgPath)
 	return &Bridge{
 		eth.NewEthLand(config.EthChainWsEndpoint),
 		dip.NewDipLand(config.DipSdkCfgFileAbsPath),
