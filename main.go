@@ -1,9 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"log"
 	"os"
+
+	"github.com/Dipper-Labs/dip-bridge/config"
+	sdkconfig "github.com/Dipper-Labs/go-sdk/config"
 )
 
 func main() {
@@ -13,9 +17,18 @@ func main() {
 		log.Fatal("wrong args. should use by: dip-bridge [config file path]")
 	}
 
-	ctx := context.Background()
+	log.Printf("Enter Keystore Password: ")
+	keystorePassword, err := bufio.NewReader(os.Stdout).ReadString('\n')
+	if err != nil {
+		log.Fatalf("get keystore password failed:[%v]", err)
+	}
+	keystorePassword = keystorePassword[:len(keystorePassword)-1]
 
-	bridge := NewBridge(os.Args[1])
+	config.Init(os.Args[1])
+	sdkconfig.SetKeystorePassword(keystorePassword)
+	bridge := NewBridge()
+
+	ctx := context.Background()
 	go bridge.RunBridge(ctx)
 
 	headerChan, sub := bridge.SubscribeNewHead(ctx)
