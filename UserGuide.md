@@ -50,7 +50,7 @@ address为账号地址
 ### 3.4 确保MetaMask安装完毕并已成功导入待映射以太坊账号
 ### 3.5 点击Connect to Web3,弹出的Connect a Wallet 对话框中选择MetaMask,根据提示完成连接,确保状态更新为Connected的状态
 ### 3.6 点击approve
-### 3.7 输入官方的锁仓合约地址: TODO,输入要映射的数量,推荐将所有DIP ERC20做映射,点击Write,弹出MetaMask,确认交易后点击确认发送交易
+### 3.7 输入官方的锁仓合约地址: 0xD14f2f1e32e2Dd4C17DFA27f1393815674e2adA2,输入要映射的数量,推荐将所有DIP ERC20做映射,点击Write,弹出MetaMask,确认交易后点击确认发送交易
 ### 3.8 确保交易完成
 
 
@@ -58,14 +58,16 @@ address为账号地址
 成功完成了步骤3的交易，以下步骤中的4.4, 4.5可以跳过
 
 ### 4.1 打开以太坊浏览器: https://etherscan.io/
-### 4.2 在以太坊浏览器搜索DIP官方的锁仓合约地址: TODO
+### 4.2 在以太坊浏览器搜索DIP官方的锁仓合约地址: 0xD14f2f1e32e2Dd4C17DFA27f1393815674e2adA2
 ### 4.3 点击Contract标签下的Write Contract标签
 ### 4.4 确保MetaMask安装完毕并已成功导入待映射以太坊地址
 ### 4.5 点击Connect to Web3, 弹出的Connect a Wallet 对话框中选择MetaMask, 根据提示完成连接
 ### 4.6 点击LockToken
-### 4.7 dipAddr参数输入步骤2中创建的主网地址(例如: dip1kku6g066hzl6pxm7ldf8ydl2wn7damy3q3awl8),amount字段输入要映射的数量,最多不能超过步骤3中授权给合约的数量,如果超过交易会失败,点击Write,弹出MetaMask,确认交易后点击确认发送交易
+### 4.7 dipAddr参数输入步骤2中创建的主网地址(例如: dip1kku6g066hzl6pxm7ldf8ydl2wn7damy3q3awl8,注意: 这里是举例,请输入自己的地址),amount字段输入要映射的数量,最多不能超过步骤3中授权给合约的数量,如果超过交易会失败,点击Write,弹出MetaMask,确认交易后点击确认发送交易
 ### 4.8 确保交易完成
+### 4.9 交易完成后,需要等待50个区块确认后映射才会被执行
 
 ## 5. 查看主网账号到账
-### 5.1 打开主网浏览器: https://explorer.dippernetwork.com/
-### 5.2 在页面输入你映射的主网地址(例如: dip1kku6g066hzl6pxm7ldf8ydl2wn7damy3q3awl8),点击回车搜索你的账号详情
+### 5.1 步骤4的交易完成后,需要等待50个以太坊确认数映射才会最终执行,请等待至少50个区块再执行5.2以后的步骤
+### 5.2 打开主网浏览器: https://explorer.dippernetwork.com/
+### 5.3 在页面输入你映射的主网地址(例如: dip1kku6g066hzl6pxm7ldf8ydl2wn7damy3q3awl8),点击回车搜索你的账号详情
