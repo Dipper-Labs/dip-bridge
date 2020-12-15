@@ -25,7 +25,6 @@ func NewEthLand(rawUrl string) EthLand {
 	if err != nil {
 		log.Fatalf("do ethclient.Dial failed:[%v],rawUrl:[%s]\n", err, rawUrl)
 	}
-
 	return &ethLand{EthCli: cli}
 }
 

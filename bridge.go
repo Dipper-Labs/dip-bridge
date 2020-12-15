@@ -81,7 +81,9 @@ func (bridge *Bridge) RunBridge(ctx context.Context) {
 
 		logs, err := bridge.QueryTokenLockedLog(ctx, ethDipManagerAddr, fromBlock, toBlock)
 		if err != nil {
-			log.Fatalf("do QueryTokenLockedLog failed:[%v],fromBlock:%v, toBlock:%v\n", err, fromBlock, toBlock)
+			log.Printf("do QueryTokenLockedLog failed:[%v],fromBlock:%v, toBlock:%v\n", err, fromBlock, toBlock)
+			time.Sleep(time.Second * time.Duration(10))
+			continue
 		}
 
 		if len(logs) > 0 {
